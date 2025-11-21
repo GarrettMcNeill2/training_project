@@ -16,34 +16,68 @@ extends CharacterBody3D
 @export var enable_bobbing: bool = true
 @export var bob_time: float = PI / 8.0
 
+@export_group("Combat Parameters")
+@export var attack_time: float = 2.0
 
 # scene refrences 
 @onready var animation_player: AnimationPlayer = $mesh/AnimationPlayer
 @onready var head: Node3D = $head
 
 
-var states = []
+var states = ["idle", "walk", "run", "slash", "attack"]
+var state = "idle"
 var look_direction : Vector2
+var slash_cooldown: float = 0.0
+var attack_cooldown: float = 0.0
 
 func _physics_process(delta: float) -> void:
 	var input_direction: Vector2 = Input.get_vector("move_left", "move_right", "move_forward", "move_back")
 	
-	if input_direction : 
+	if slash_cooldown > 0.0:
+		slash(delta)
+	elif attack_cooldown > 0.0:
+		attack(delta)
+	elif input_direction : 
 		if Input.is_action_pressed("shift") : 
+			self.state = "run"
 			run(delta)
 		else : 
+			self.state = "walk"
 			walk(delta)
 	else : 
+		self.state = "idle"
 		idle(delta)
+	
+	# these could also be accomplished with a Timer node...
+	if (slash_cooldown > 0.0):
+		slash_cooldown -= delta
+	if (attack_cooldown > 0.0):
+		attack_cooldown -= delta
+	
 	handle_rotation()
 	move_and_slide()
 
 # movement functions
 #region 
 
-func idle (delta : float) -> void : 
-	# play correct animation 
-	animation_player.play("Sword And Shield Idle/mixamo_com")
+func get_slash() -> void:
+	if Input.is_action_just_pressed("attack") and slash_cooldown <= 0.0:
+		self.state = "slash"
+		slash_cooldown = attack_time
+
+func idle (delta : float) -> void :
+	# slow down towards zero 
+	velocity.x = move_toward(velocity.x, 0, walk_speed)
+	velocity.z = move_toward(velocity.z, 0, walk_speed)
+	
+	get_slash()
+
+func slash(delta: float) -> void:
+	# slow down towards zero 
+	velocity.x = move_toward(velocity.x, 0, walk_speed)
+	velocity.z = move_toward(velocity.z, 0, walk_speed)
+
+func attack(delta: float) -> void:
 	# slow down towards zero 
 	velocity.x = move_toward(velocity.x, 0, walk_speed)
 	velocity.z = move_toward(velocity.z, 0, walk_speed)
@@ -56,6 +90,8 @@ func walk (delta : float) -> void :
 	# move the player 
 	velocity.x = move_direction.x * walk_speed
 	velocity.z = move_direction.z * walk_speed
+	
+	get_slash()
 
 func run (delta : float) -> void : 
 	
@@ -65,6 +101,10 @@ func run (delta : float) -> void :
 	# move the player 
 	velocity.x = move_direction.x * run_speed
 	velocity.z = move_direction.z * run_speed
+	
+	if Input.is_action_just_pressed("attack") and attack_cooldown <= 0.0:
+		self.state = "attack"
+		attack_cooldown = attack_time
 
 func handle_rotation():
 	# capture current mouse movement
@@ -84,3 +124,14 @@ func handle_rotation():
 	rotate_y(look_direction.y)
 	head.transform.basis = Basis()
 	head.rotate_x(look_direction.x)
+
+func _on_animation_tree_animation_finished(anim_name: StringName) -> void:
+	print(anim_name)
+	if anim_name == "Sword And Shield Slash/mixamo_com" || anim_name == "Sword And Shield Attack/mixamo_com":
+		var movement: Vector2 = Input.get_vector("move_left", "move_right", "move_forward", "move_back")
+		if movement:
+			state = "walk"
+		else:
+			state = "idle"
+		slash_cooldown = 0.0
+		attack_cooldown = 0.0
