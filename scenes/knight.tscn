@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://bradydmqjatd7"]
+[gd_scene load_steps=32 format=3 uid="uid://bradydmqjatd7"]
 
 [ext_resource type="PackedScene" uid="uid://cblet51a76nru" path="res://art/characters/knight/Paladin J Nordstrom.fbx" id="1_0dyjn"]
 [ext_resource type="Script" uid="uid://ce6bopaalpavb" path="res://scripts/knight.gd" id="1_5fsgc"]
@@ -7,6 +7,7 @@
 [ext_resource type="AnimationLibrary" uid="uid://chbofbx3lh1o2" path="res://art/characters/knight/Sword And Shield Run.fbx" id="3_swm0g"]
 [ext_resource type="AnimationLibrary" uid="uid://b5ylccurdptoe" path="res://art/characters/knight/Sword And Shield Walk.fbx" id="4_k2txo"]
 [ext_resource type="AnimationLibrary" uid="uid://d2hn1vp3gupe3" path="res://art/characters/knight/Sword And Shield Slash.fbx" id="6_mvyd6"]
+[ext_resource type="AnimationLibrary" uid="uid://b22rllx7kwbup" path="res://art/characters/knight/Sword And Shield Strafe.fbx" id="7_mvyd6"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_5fsgc"]
 radius = 0.47
@@ -23,18 +24,23 @@ animation = &"Sword And Shield Run/mixamo_com"
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_mvyd6"]
 animation = &"Sword And Shield Slash/mixamo_com"
 
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_swm0g"]
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_3cm67"]
+animation = &"Sword And Shield Strafe/mixamo_com"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_w8y5l"]
 animation = &"Sword And Shield Walk/mixamo_com"
 
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_k2txo"]
-xfade_time = 0.2
-advance_mode = 2
-advance_expression = "velocity.length() > .2"
+[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_mvyd6"]
 
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_mvyd6"]
-xfade_time = 0.2
-advance_mode = 2
-advance_expression = "velocity.length() < .2"
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_nw3uw"]
+graph_offset = Vector2(-726.1, -30.3)
+nodes/Strafe/node = SubResource("AnimationNodeAnimation_3cm67")
+nodes/Strafe/position = Vector2(-320, 300)
+nodes/Walk/node = SubResource("AnimationNodeAnimation_w8y5l")
+nodes/Walk/position = Vector2(-340, 100)
+nodes/move/node = SubResource("AnimationNodeBlend2_mvyd6")
+nodes/move/position = Vector2(100, 120)
+node_connections = [&"move", 0, &"Walk", &"move", 1, &"Strafe", &"output", 0, &"move"]
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_5fsgc"]
 advance_mode = 2
@@ -49,16 +55,6 @@ xfade_time = 0.2
 advance_mode = 2
 advance_expression = "velocity.length() < 0.2"
 
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_w8y5l"]
-xfade_time = 0.2
-advance_mode = 2
-advance_expression = "velocity.length() < 6.0"
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_nw3uw"]
-xfade_time = 0.2
-advance_mode = 2
-advance_expression = "velocity.length() > 6.0"
-
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_4ok4f"]
 xfade_time = 0.2
 advance_mode = 2
@@ -70,16 +66,6 @@ switch_mode = 2
 advance_mode = 2
 advance_expression = "state == \"idle\""
 
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_oi1vv"]
-xfade_time = 0.2
-advance_mode = 2
-advance_expression = "state == \"slash\""
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_06ia3"]
-xfade_time = 0.2
-advance_mode = 2
-advance_expression = "state == \"walk\""
-
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_8a0iq"]
 xfade_time = 0.2
 advance_mode = 2
@@ -89,21 +75,51 @@ advance_expression = "state == \"attack\""
 advance_mode = 2
 advance_expression = "state == \"idle\""
 
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_mvyd6"]
+xfade_time = 0.2
+advance_mode = 2
+advance_expression = "state == \"walk\""
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_w8y5l"]
+xfade_time = 0.2
+advance_mode = 2
+advance_expression = "state == \"idle\""
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_nw3uw"]
+xfade_time = 0.2
+advance_mode = 2
+advance_expression = "state == \"walk\""
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_oi1vv"]
+xfade_time = 0.2
+advance_mode = 2
+advance_expression = "state == \"run\""
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_06ia3"]
+xfade_time = 0.2
+advance_mode = 2
+advance_expression = "state == \"slash\""
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_tpjby"]
+xfade_time = 0.2
+advance_mode = 2
+advance_expression = "state == \"walk\""
+
 [sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_5fsgc"]
 states/End/position = Vector2(1181, 116)
 states/Start/position = Vector2(-22, 116.031)
 "states/Sword And Shield Attack_mixamo_com/node" = SubResource("AnimationNodeAnimation_14u3r")
-"states/Sword And Shield Attack_mixamo_com/position" = Vector2(303.5, -139.29)
+"states/Sword And Shield Attack_mixamo_com/position" = Vector2(233.5, -89.29)
 "states/Sword And Shield Idle_mixamo_com/node" = SubResource("AnimationNodeAnimation_5fsgc")
 "states/Sword And Shield Idle_mixamo_com/position" = Vector2(303.5, 143)
 "states/Sword And Shield Run_mixamo_com/node" = SubResource("AnimationNodeAnimation_k2txo")
 "states/Sword And Shield Run_mixamo_com/position" = Vector2(614.5, -53.5)
 "states/Sword And Shield Slash_mixamo_com/node" = SubResource("AnimationNodeAnimation_mvyd6")
 "states/Sword And Shield Slash_mixamo_com/position" = Vector2(572.119, 365.71)
-"states/Sword And Shield Walk_mixamo_com/node" = SubResource("AnimationNodeAnimation_swm0g")
-"states/Sword And Shield Walk_mixamo_com/position" = Vector2(917, 121.25)
-transitions = ["Sword And Shield Idle_mixamo_com", "Sword And Shield Walk_mixamo_com", SubResource("AnimationNodeStateMachineTransition_k2txo"), "Sword And Shield Walk_mixamo_com", "Sword And Shield Idle_mixamo_com", SubResource("AnimationNodeStateMachineTransition_mvyd6"), "Start", "Sword And Shield Idle_mixamo_com", SubResource("AnimationNodeStateMachineTransition_5fsgc"), "Sword And Shield Idle_mixamo_com", "Sword And Shield Run_mixamo_com", SubResource("AnimationNodeStateMachineTransition_14u3r"), "Sword And Shield Run_mixamo_com", "Sword And Shield Idle_mixamo_com", SubResource("AnimationNodeStateMachineTransition_3cm67"), "Sword And Shield Run_mixamo_com", "Sword And Shield Walk_mixamo_com", SubResource("AnimationNodeStateMachineTransition_w8y5l"), "Sword And Shield Walk_mixamo_com", "Sword And Shield Run_mixamo_com", SubResource("AnimationNodeStateMachineTransition_nw3uw"), "Sword And Shield Idle_mixamo_com", "Sword And Shield Slash_mixamo_com", SubResource("AnimationNodeStateMachineTransition_4ok4f"), "Sword And Shield Slash_mixamo_com", "Sword And Shield Idle_mixamo_com", SubResource("AnimationNodeStateMachineTransition_c7bgd"), "Sword And Shield Walk_mixamo_com", "Sword And Shield Slash_mixamo_com", SubResource("AnimationNodeStateMachineTransition_oi1vv"), "Sword And Shield Slash_mixamo_com", "Sword And Shield Walk_mixamo_com", SubResource("AnimationNodeStateMachineTransition_06ia3"), "Sword And Shield Run_mixamo_com", "Sword And Shield Attack_mixamo_com", SubResource("AnimationNodeStateMachineTransition_8a0iq"), "Sword And Shield Attack_mixamo_com", "Sword And Shield Idle_mixamo_com", SubResource("AnimationNodeStateMachineTransition_8ko4r")]
-graph_offset = Vector2(-67.8812, -254.29)
+states/WalkStrafeBlend/node = SubResource("AnimationNodeBlendTree_nw3uw")
+states/WalkStrafeBlend/position = Vector2(871.119, 130.71)
+transitions = ["Start", "Sword And Shield Idle_mixamo_com", SubResource("AnimationNodeStateMachineTransition_5fsgc"), "Sword And Shield Idle_mixamo_com", "Sword And Shield Run_mixamo_com", SubResource("AnimationNodeStateMachineTransition_14u3r"), "Sword And Shield Run_mixamo_com", "Sword And Shield Idle_mixamo_com", SubResource("AnimationNodeStateMachineTransition_3cm67"), "Sword And Shield Idle_mixamo_com", "Sword And Shield Slash_mixamo_com", SubResource("AnimationNodeStateMachineTransition_4ok4f"), "Sword And Shield Slash_mixamo_com", "Sword And Shield Idle_mixamo_com", SubResource("AnimationNodeStateMachineTransition_c7bgd"), "Sword And Shield Run_mixamo_com", "Sword And Shield Attack_mixamo_com", SubResource("AnimationNodeStateMachineTransition_8a0iq"), "Sword And Shield Attack_mixamo_com", "Sword And Shield Idle_mixamo_com", SubResource("AnimationNodeStateMachineTransition_8ko4r"), "Sword And Shield Idle_mixamo_com", "WalkStrafeBlend", SubResource("AnimationNodeStateMachineTransition_mvyd6"), "WalkStrafeBlend", "Sword And Shield Idle_mixamo_com", SubResource("AnimationNodeStateMachineTransition_w8y5l"), "Sword And Shield Run_mixamo_com", "WalkStrafeBlend", SubResource("AnimationNodeStateMachineTransition_nw3uw"), "WalkStrafeBlend", "Sword And Shield Run_mixamo_com", SubResource("AnimationNodeStateMachineTransition_oi1vv"), "WalkStrafeBlend", "Sword And Shield Slash_mixamo_com", SubResource("AnimationNodeStateMachineTransition_06ia3"), "Sword And Shield Slash_mixamo_com", "WalkStrafeBlend", SubResource("AnimationNodeStateMachineTransition_tpjby")]
+graph_offset = Vector2(-266.881, -211.29)
 
 [node name="knight" type="CharacterBody3D"]
 script = ExtResource("1_5fsgc")
@@ -117,6 +133,7 @@ libraries = {
 &"Sword And Shield Idle": ExtResource("2_5fsgc"),
 &"Sword And Shield Run": ExtResource("3_swm0g"),
 &"Sword And Shield Slash": ExtResource("6_mvyd6"),
+&"Sword And Shield Strafe": ExtResource("7_mvyd6"),
 &"Sword And Shield Walk": ExtResource("4_k2txo")
 }
 autoplay = "Sword And Shield Idle/mixamo_com"
@@ -138,5 +155,6 @@ root_node = NodePath("../mesh")
 tree_root = SubResource("AnimationNodeStateMachine_5fsgc")
 advance_expression_base_node = NodePath("..")
 anim_player = NodePath("../mesh/AnimationPlayer")
+parameters/WalkStrafeBlend/move/blend_amount = 0
 
 [connection signal="animation_finished" from="AnimationTree" to="." method="_on_animation_tree_animation_finished"]

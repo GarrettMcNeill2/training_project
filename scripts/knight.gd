@@ -21,17 +21,22 @@ extends CharacterBody3D
 
 # scene refrences 
 @onready var animation_player: AnimationPlayer = $mesh/AnimationPlayer
+@onready var animation_tree: AnimationTree = $AnimationTree
 @onready var head: Node3D = $head
-
 
 var states = ["idle", "walk", "run", "slash", "attack"]
 var state = "idle"
 var look_direction : Vector2
 var slash_cooldown: float = 0.0
 var attack_cooldown: float = 0.0
+var current_strafe: float = 0.0
 
 func _physics_process(delta: float) -> void:
 	var input_direction: Vector2 = Input.get_vector("move_left", "move_right", "move_forward", "move_back")
+	
+	var strafe_amount = abs(transform.basis.x.normalized().dot(velocity.normalized()))
+	current_strafe = move_toward(current_strafe, strafe_amount, 4.0 * delta)
+	animation_tree["parameters/WalkStrafeBlend/move/blend_amount"] = current_strafe
 	
 	if slash_cooldown > 0.0:
 		slash(delta)
