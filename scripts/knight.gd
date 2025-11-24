@@ -34,9 +34,7 @@ var current_strafe: float = 0.0
 func _physics_process(delta: float) -> void:
 	var input_direction: Vector2 = Input.get_vector("move_left", "move_right", "move_forward", "move_back")
 	
-	var strafe_amount = abs(transform.basis.x.normalized().dot(velocity.normalized()))
-	current_strafe = move_toward(current_strafe, strafe_amount, 4.0 * delta)
-	animation_tree["parameters/WalkStrafeBlend/move/blend_amount"] = current_strafe
+	update_animations(delta, input_direction)
 	
 	if slash_cooldown > 0.0:
 		slash(delta)
@@ -61,6 +59,23 @@ func _physics_process(delta: float) -> void:
 	
 	handle_rotation()
 	move_and_slide()
+
+# animation functions
+#region
+func update_animations(delta: float, input: Vector2) -> void:
+	var strafe_amount = abs(transform.basis.x.normalized().dot(velocity.normalized()))
+	current_strafe = move_toward(current_strafe, strafe_amount, 4.0 * delta)
+	animation_tree["parameters/WalkStrafeBlend/move/blend_amount"] = current_strafe
+	
+	# BUG: camera and movement are flipped when going back/forward: moving forward is a "negative y" change...
+	# also, we use sign here because somewhere, the input vector is normalized instead of Manhattan-ed
+	animation_tree["parameters/WalkStrafeBlend/WalkScale/scale"] = -sign(input.y)
+	animation_tree["parameters/WalkStrafeBlend/StrafeScale/scale"] = sign(input.x)
+	
+	# TODO: running backwards?
+	animation_tree["parameters/RunBlend/RunScale/scale"] = -sign(input.y)
+
+#endregion
 
 # movement functions
 #region 
