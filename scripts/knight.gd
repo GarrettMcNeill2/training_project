@@ -24,6 +24,7 @@ extends CharacterBody3D
 @onready var animation_tree: AnimationTree = $AnimationTree
 @onready var head: Node3D = $head
 
+# temporary state variables
 var states = ["idle", "walk", "run", "slash", "attack"]
 var state = "idle"
 var look_direction : Vector2
@@ -32,6 +33,22 @@ var attack_cooldown: float = 0.0
 var current_strafe: float = 0.0
 
 const GRAVITY = 20.0
+
+# status variables
+var health: int = 100:
+	set(v):
+		health = v
+		emit_signal("health_changed")
+var max_health: int = 100
+var stamina: float = 5.0:
+	set(v):
+		stamina = v
+		emit_signal("stamina_changed")
+var max_stamina: float = 5.0
+
+# status change signals
+signal health_changed
+signal stamina_changed
 
 func _process(delta: float) -> void:
 	handle_rotation()
@@ -91,6 +108,7 @@ func get_slash() -> void:
 		slash_cooldown = attack_time
 
 func idle (delta : float) -> void :
+	self.stamina = move_toward(self.stamina, self.max_stamina, delta)
 	# slow down towards zero 
 	velocity.x = move_toward(velocity.x, 0, walk_speed)
 	velocity.z = move_toward(velocity.z, 0, walk_speed)
@@ -108,6 +126,7 @@ func attack(delta: float) -> void:
 	velocity.z = move_toward(velocity.z, 0, walk_speed)
 
 func walk (delta : float) -> void : 
+	self.stamina = move_toward(self.stamina, self.max_stamina, delta)
 	
 	var input_direction: Vector2 = Input.get_vector("move_left", "move_right", "move_forward", "move_back")
 	var move_direction: Vector3 = (transform.basis * Vector3(input_direction.x, 0, input_direction.y)).normalized()
@@ -133,6 +152,10 @@ func run (delta : float) -> void :
 	if Input.is_action_just_pressed("attack") and attack_cooldown <= 0.0:
 		self.state = "attack"
 		attack_cooldown = attack_time
+	
+	self.stamina -= delta
+	if self.stamina <= 0.0:
+		self.state = "walk"
 
 func handle_rotation():
 	# capture current mouse movement

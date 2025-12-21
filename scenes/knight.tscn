@@ -1,8 +1,9 @@
-[gd_scene load_steps=37 format=3 uid="uid://bradydmqjatd7"]
+[gd_scene load_steps=43 format=3 uid="uid://bradydmqjatd7"]
 
 [ext_resource type="PackedScene" uid="uid://cblet51a76nru" path="res://art/characters/knight/Paladin J Nordstrom.fbx" id="1_0dyjn"]
 [ext_resource type="Script" uid="uid://ce6bopaalpavb" path="res://scripts/knight.gd" id="1_5fsgc"]
 [ext_resource type="AnimationLibrary" uid="uid://bb8gdkl2uw5fg" path="res://art/characters/knight/Sword And Shield Idle.fbx" id="2_5fsgc"]
+[ext_resource type="AnimationLibrary" uid="uid://rifha6l11uos" path="res://art/characters/knight/Falling Idle.fbx" id="3_14u3r"]
 [ext_resource type="AnimationLibrary" uid="uid://cuk264kupmgcq" path="res://art/characters/knight/Sword And Shield Attack.fbx" id="3_k2txo"]
 [ext_resource type="AnimationLibrary" uid="uid://chbofbx3lh1o2" path="res://art/characters/knight/Sword And Shield Run.fbx" id="3_swm0g"]
 [ext_resource type="AnimationLibrary" uid="uid://b5ylccurdptoe" path="res://art/characters/knight/Sword And Shield Walk.fbx" id="4_k2txo"]
@@ -11,6 +12,9 @@
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_5fsgc"]
 radius = 0.47
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_4ok4f"]
+animation = &"Falling Idle/mixamo_com"
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_nw3uw"]
 animation = &"Sword And Shield Run/mixamo_com"
@@ -130,8 +134,30 @@ xfade_time = 0.2
 advance_mode = 2
 advance_expression = "state == \"attack\""
 
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_8a0iq"]
+xfade_time = 0.3
+advance_mode = 2
+advance_expression = "state == \"falling\""
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ouiji"]
+xfade_time = 0.3
+advance_mode = 2
+advance_expression = "abs(velocity.y) > 0.02"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_4yp3h"]
+xfade_time = 0.3
+advance_mode = 2
+advance_expression = "abs(velocity.y) > 0.02"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_co5rl"]
+xfade_time = 0.1
+advance_mode = 2
+advance_expression = "abs(velocity.y) <= 0.02"
+
 [sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_5fsgc"]
 states/End/position = Vector2(1181, 116)
+"states/Falling Idle_mixamo_com/node" = SubResource("AnimationNodeAnimation_4ok4f")
+"states/Falling Idle_mixamo_com/position" = Vector2(805.119, -16.289993)
 states/RunBlend/node = SubResource("AnimationNodeBlendTree_c7bgd")
 states/RunBlend/position = Vector2(573.119, -48.29)
 states/Start/position = Vector2(-22, 116.031)
@@ -143,17 +169,20 @@ states/Start/position = Vector2(-22, 116.031)
 "states/Sword And Shield Slash_mixamo_com/position" = Vector2(607.119, 341.71)
 states/WalkStrafeBlend/node = SubResource("AnimationNodeBlendTree_nw3uw")
 states/WalkStrafeBlend/position = Vector2(845.119, 116)
-transitions = ["Start", "Sword And Shield Idle_mixamo_com", SubResource("AnimationNodeStateMachineTransition_5fsgc"), "Sword And Shield Idle_mixamo_com", "Sword And Shield Slash_mixamo_com", SubResource("AnimationNodeStateMachineTransition_4ok4f"), "Sword And Shield Slash_mixamo_com", "Sword And Shield Idle_mixamo_com", SubResource("AnimationNodeStateMachineTransition_c7bgd"), "Sword And Shield Attack_mixamo_com", "Sword And Shield Idle_mixamo_com", SubResource("AnimationNodeStateMachineTransition_8ko4r"), "Sword And Shield Idle_mixamo_com", "WalkStrafeBlend", SubResource("AnimationNodeStateMachineTransition_mvyd6"), "WalkStrafeBlend", "Sword And Shield Idle_mixamo_com", SubResource("AnimationNodeStateMachineTransition_w8y5l"), "WalkStrafeBlend", "Sword And Shield Slash_mixamo_com", SubResource("AnimationNodeStateMachineTransition_06ia3"), "Sword And Shield Slash_mixamo_com", "WalkStrafeBlend", SubResource("AnimationNodeStateMachineTransition_tpjby"), "WalkStrafeBlend", "RunBlend", SubResource("AnimationNodeStateMachineTransition_o7g6j"), "RunBlend", "WalkStrafeBlend", SubResource("AnimationNodeStateMachineTransition_rlkoa"), "Sword And Shield Slash_mixamo_com", "RunBlend", SubResource("AnimationNodeStateMachineTransition_nw3uw"), "Sword And Shield Idle_mixamo_com", "RunBlend", SubResource("AnimationNodeStateMachineTransition_oi1vv"), "RunBlend", "Sword And Shield Idle_mixamo_com", SubResource("AnimationNodeStateMachineTransition_14u3r"), "RunBlend", "Sword And Shield Attack_mixamo_com", SubResource("AnimationNodeStateMachineTransition_3cm67")]
-graph_offset = Vector2(-158.881, -254.29)
+transitions = ["Start", "Sword And Shield Idle_mixamo_com", SubResource("AnimationNodeStateMachineTransition_5fsgc"), "Sword And Shield Idle_mixamo_com", "Sword And Shield Slash_mixamo_com", SubResource("AnimationNodeStateMachineTransition_4ok4f"), "Sword And Shield Slash_mixamo_com", "Sword And Shield Idle_mixamo_com", SubResource("AnimationNodeStateMachineTransition_c7bgd"), "Sword And Shield Attack_mixamo_com", "Sword And Shield Idle_mixamo_com", SubResource("AnimationNodeStateMachineTransition_8ko4r"), "Sword And Shield Idle_mixamo_com", "WalkStrafeBlend", SubResource("AnimationNodeStateMachineTransition_mvyd6"), "WalkStrafeBlend", "Sword And Shield Idle_mixamo_com", SubResource("AnimationNodeStateMachineTransition_w8y5l"), "WalkStrafeBlend", "Sword And Shield Slash_mixamo_com", SubResource("AnimationNodeStateMachineTransition_06ia3"), "Sword And Shield Slash_mixamo_com", "WalkStrafeBlend", SubResource("AnimationNodeStateMachineTransition_tpjby"), "WalkStrafeBlend", "RunBlend", SubResource("AnimationNodeStateMachineTransition_o7g6j"), "RunBlend", "WalkStrafeBlend", SubResource("AnimationNodeStateMachineTransition_rlkoa"), "Sword And Shield Slash_mixamo_com", "RunBlend", SubResource("AnimationNodeStateMachineTransition_nw3uw"), "Sword And Shield Idle_mixamo_com", "RunBlend", SubResource("AnimationNodeStateMachineTransition_oi1vv"), "RunBlend", "Sword And Shield Idle_mixamo_com", SubResource("AnimationNodeStateMachineTransition_14u3r"), "RunBlend", "Sword And Shield Attack_mixamo_com", SubResource("AnimationNodeStateMachineTransition_3cm67"), "Sword And Shield Idle_mixamo_com", "Falling Idle_mixamo_com", SubResource("AnimationNodeStateMachineTransition_8a0iq"), "WalkStrafeBlend", "Falling Idle_mixamo_com", SubResource("AnimationNodeStateMachineTransition_ouiji"), "RunBlend", "Falling Idle_mixamo_com", SubResource("AnimationNodeStateMachineTransition_4yp3h"), "Falling Idle_mixamo_com", "Sword And Shield Idle_mixamo_com", SubResource("AnimationNodeStateMachineTransition_co5rl")]
+graph_offset = Vector2(85.119, -108.28999)
 
 [node name="knight" type="CharacterBody3D"]
 script = ExtResource("1_5fsgc")
+walk_speed = 4.0
+run_speed = 8.0
 
 [node name="mesh" parent="." instance=ExtResource("1_0dyjn")]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="mesh"]
 libraries = {
+&"Falling Idle": ExtResource("3_14u3r"),
 &"Sword And Shield Attack": ExtResource("3_k2txo"),
 &"Sword And Shield Idle": ExtResource("2_5fsgc"),
 &"Sword And Shield Run": ExtResource("3_swm0g"),
