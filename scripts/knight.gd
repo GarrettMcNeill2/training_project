@@ -31,6 +31,11 @@ var slash_cooldown: float = 0.0
 var attack_cooldown: float = 0.0
 var current_strafe: float = 0.0
 
+const GRAVITY = 20.0
+
+func _process(delta: float) -> void:
+	handle_rotation()
+
 func _physics_process(delta: float) -> void:
 	var input_direction: Vector2 = Input.get_vector("move_left", "move_right", "move_forward", "move_back")
 	
@@ -57,7 +62,7 @@ func _physics_process(delta: float) -> void:
 	if (attack_cooldown > 0.0):
 		attack_cooldown -= delta
 	
-	handle_rotation()
+	apply_gravity(delta)
 	move_and_slide()
 
 # animation functions
@@ -112,6 +117,9 @@ func walk (delta : float) -> void :
 	velocity.z = move_direction.z * walk_speed
 	
 	get_slash()
+
+func apply_gravity(delta: float) -> void:
+	velocity.y += -GRAVITY * delta
 
 func run (delta : float) -> void : 
 	

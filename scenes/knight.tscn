@@ -19,12 +19,12 @@ animation = &"Sword And Shield Run/mixamo_com"
 
 [sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_c7bgd"]
 graph_offset = Vector2(-428.907, 156.425)
+nodes/output/position = Vector2(540, 160)
 nodes/Run/node = SubResource("AnimationNodeAnimation_nw3uw")
 nodes/Run/position = Vector2(-160, 120)
 nodes/RunScale/node = SubResource("AnimationNodeTimeScale_4ok4f")
 nodes/RunScale/position = Vector2(260, 140)
-nodes/output/position = Vector2(540, 160)
-node_connections = [&"RunScale", 0, &"Run", &"output", 0, &"RunScale"]
+node_connections = [&"output", 0, &"RunScale", &"RunScale", 0, &"Run"]
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_14u3r"]
 animation = &"Sword And Shield Attack/mixamo_com"
@@ -49,6 +49,7 @@ animation = &"Sword And Shield Walk/mixamo_com"
 
 [sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_nw3uw"]
 graph_offset = Vector2(-678.663, 69.0085)
+nodes/output/position = Vector2(440, 160)
 nodes/Strafe/node = SubResource("AnimationNodeAnimation_3cm67")
 nodes/Strafe/position = Vector2(-420, 380)
 nodes/StrafeScale/node = SubResource("AnimationNodeTimeScale_mvyd6")
@@ -59,8 +60,7 @@ nodes/WalkScale/node = SubResource("AnimationNodeTimeScale_14u3r")
 nodes/WalkScale/position = Vector2(-80, 80)
 nodes/move/node = SubResource("AnimationNodeBlend2_mvyd6")
 nodes/move/position = Vector2(160, 140)
-nodes/output/position = Vector2(440, 160)
-node_connections = [&"StrafeScale", 0, &"Strafe", &"WalkScale", 0, &"Walk", &"move", 0, &"WalkScale", &"move", 1, &"StrafeScale", &"output", 0, &"move"]
+node_connections = [&"output", 0, &"move", &"StrafeScale", 0, &"Strafe", &"WalkScale", 0, &"Walk", &"move", 0, &"WalkScale", &"move", 1, &"StrafeScale"]
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_5fsgc"]
 advance_mode = 2
@@ -144,7 +144,7 @@ states/Start/position = Vector2(-22, 116.031)
 states/WalkStrafeBlend/node = SubResource("AnimationNodeBlendTree_nw3uw")
 states/WalkStrafeBlend/position = Vector2(845.119, 116)
 transitions = ["Start", "Sword And Shield Idle_mixamo_com", SubResource("AnimationNodeStateMachineTransition_5fsgc"), "Sword And Shield Idle_mixamo_com", "Sword And Shield Slash_mixamo_com", SubResource("AnimationNodeStateMachineTransition_4ok4f"), "Sword And Shield Slash_mixamo_com", "Sword And Shield Idle_mixamo_com", SubResource("AnimationNodeStateMachineTransition_c7bgd"), "Sword And Shield Attack_mixamo_com", "Sword And Shield Idle_mixamo_com", SubResource("AnimationNodeStateMachineTransition_8ko4r"), "Sword And Shield Idle_mixamo_com", "WalkStrafeBlend", SubResource("AnimationNodeStateMachineTransition_mvyd6"), "WalkStrafeBlend", "Sword And Shield Idle_mixamo_com", SubResource("AnimationNodeStateMachineTransition_w8y5l"), "WalkStrafeBlend", "Sword And Shield Slash_mixamo_com", SubResource("AnimationNodeStateMachineTransition_06ia3"), "Sword And Shield Slash_mixamo_com", "WalkStrafeBlend", SubResource("AnimationNodeStateMachineTransition_tpjby"), "WalkStrafeBlend", "RunBlend", SubResource("AnimationNodeStateMachineTransition_o7g6j"), "RunBlend", "WalkStrafeBlend", SubResource("AnimationNodeStateMachineTransition_rlkoa"), "Sword And Shield Slash_mixamo_com", "RunBlend", SubResource("AnimationNodeStateMachineTransition_nw3uw"), "Sword And Shield Idle_mixamo_com", "RunBlend", SubResource("AnimationNodeStateMachineTransition_oi1vv"), "RunBlend", "Sword And Shield Idle_mixamo_com", SubResource("AnimationNodeStateMachineTransition_14u3r"), "RunBlend", "Sword And Shield Attack_mixamo_com", SubResource("AnimationNodeStateMachineTransition_3cm67")]
-graph_offset = Vector2(-84.881, -316.29)
+graph_offset = Vector2(-158.881, -254.29)
 
 [node name="knight" type="CharacterBody3D"]
 script = ExtResource("1_5fsgc")
@@ -183,6 +183,6 @@ anim_player = NodePath("../mesh/AnimationPlayer")
 parameters/RunBlend/RunScale/scale = 1.0
 parameters/WalkStrafeBlend/StrafeScale/scale = 1.0
 parameters/WalkStrafeBlend/WalkScale/scale = 1.0
-parameters/WalkStrafeBlend/move/blend_amount = 0
+parameters/WalkStrafeBlend/move/blend_amount = 0.0
 
 [connection signal="animation_finished" from="AnimationTree" to="." method="_on_animation_tree_animation_finished"]
