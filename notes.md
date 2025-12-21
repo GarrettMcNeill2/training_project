@@ -21,3 +21,6 @@ project, significantly bloating the size of our repository. Until this is
 implemented, we're sticking with the bone-headed move of "checking in 10000+
 additions and 12 binaries when we install an addon." I hope you don't mind.
 
+## UI
+Make sure to use smarter textures for the ui. Try tiling them all and using an
+Atlas texture in editor. :D

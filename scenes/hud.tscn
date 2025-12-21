@@ -1,0 +1,95 @@
+[gd_scene load_steps=9 format=3 uid="uid://drspu3oq82t8t"]
+
+[ext_resource type="Texture2D" uid="uid://c0yj8qeogg8ux" path="res://art/ui/haert.png" id="1_5p55f"]
+[ext_resource type="Script" uid="uid://dshpd1rnop2xh" path="res://scripts/hud.gd" id="1_gdt2y"]
+[ext_resource type="Texture2D" uid="uid://h38tpkf320co" path="res://art/ui/progress_bars.png" id="2_brbbq"]
+[ext_resource type="Texture2D" uid="uid://cgqkigqi1vx46" path="res://art/ui/stanima.png" id="2_r67kn"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qodni"]
+bg_color = Color(0.6, 0.6, 0.6, 0.2901961)
+
+[sub_resource type="Theme" id="Theme_brbbq"]
+/styles/thang = null
+PanelContainer/styles/panel = SubResource("StyleBoxFlat_qodni")
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_brbbq"]
+atlas = ExtResource("2_brbbq")
+region = Rect2(0, 0, 200, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8n18e"]
+atlas = ExtResource("2_brbbq")
+region = Rect2(0, 50, 200, 50)
+
+[node name="UI" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_gdt2y")
+metadata/_edit_use_anchors_ = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="health" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="heart" type="TextureRect" parent="VBoxContainer/health"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+texture = ExtResource("1_5p55f")
+expand_mode = 1
+
+[node name="bar_backdrop" type="PanelContainer" parent="VBoxContainer/health"]
+custom_minimum_size = Vector2(200, 50)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme = SubResource("Theme_brbbq")
+
+[node name="life_total" type="TextureProgressBar" parent="VBoxContainer/health/bar_backdrop"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+size_flags_horizontal = 2
+size_flags_vertical = 0
+value = 100.0
+texture_progress = SubResource("AtlasTexture_brbbq")
+
+[node name="Control" type="Control" parent="VBoxContainer/health"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="stamina" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="vial" type="TextureRect" parent="VBoxContainer/stamina"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+texture = ExtResource("2_r67kn")
+expand_mode = 1
+
+[node name="bar_backdrop" type="PanelContainer" parent="VBoxContainer/stamina"]
+custom_minimum_size = Vector2(200, 50)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme = SubResource("Theme_brbbq")
+
+[node name="stamina_total" type="TextureProgressBar" parent="VBoxContainer/stamina/bar_backdrop"]
+custom_minimum_size = Vector2(200, 50)
+layout_mode = 2
+size_flags_horizontal = 2
+size_flags_vertical = 0
+value = 100.0
+texture_progress = SubResource("AtlasTexture_8n18e")
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3

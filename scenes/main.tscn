@@ -1,10 +1,11 @@
-[gd_scene load_steps=18 format=3 uid="uid://dikfmh2oyvtfc"]
+[gd_scene load_steps=19 format=3 uid="uid://dikfmh2oyvtfc"]
 
 [ext_resource type="PackedScene" uid="uid://bradydmqjatd7" path="res://scenes/knight.tscn" id="1_o5qli"]
 [ext_resource type="Texture2D" uid="uid://df7fpu6240i5n" path="res://art/terrain/Rock030_1K-PNG/Rock030_1K-PNG_Color.png" id="2_sugp2"]
 [ext_resource type="Texture2D" uid="uid://chfo34y5s38sb" path="res://art/terrain/Rock030_1K-PNG/Rock030_1K-PNG_NormalDX.png" id="3_jyhfs"]
 [ext_resource type="Texture2D" uid="uid://dknsg2oslatf2" path="res://art/terrain/Grass001_1K-PNG/Grass001_1K-PNG_Color.png" id="4_tbgi4"]
 [ext_resource type="Texture2D" uid="uid://c5m3evwply7vv" path="res://art/terrain/Grass001_1K-PNG/Grass001_1K-PNG_NormalDX.png" id="5_tefeu"]
+[ext_resource type="PackedScene" uid="uid://drspu3oq82t8t" path="res://scenes/hud.tscn" id="6_tefeu"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_o5qli"]
 sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
@@ -47,7 +48,7 @@ _shader_parameters = {
 &"auto_overlay_texture": 1,
 &"auto_slope": 1.0,
 &"bias_distance": 512.0,
-&"blend_sharpness": 0.010000000475,
+&"blend_sharpness": 0.0,
 &"depth_blur": 0.0,
 &"enable_macro_variation": true,
 &"enable_projection": true,
@@ -123,3 +124,5 @@ material = SubResource("Terrain3DMaterial_jyhfs")
 assets = SubResource("Terrain3DAssets_o6xl0")
 top_level = true
 metadata/_edit_lock_ = true
+
+[node name="HUD" parent="." instance=ExtResource("6_tefeu")]
