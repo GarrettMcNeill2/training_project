@@ -1,4 +1,4 @@
-[gd_scene load_steps=43 format=3 uid="uid://bradydmqjatd7"]
+[gd_scene load_steps=44 format=3 uid="uid://bradydmqjatd7"]
 
 [ext_resource type="PackedScene" uid="uid://cblet51a76nru" path="res://art/characters/knight/Paladin J Nordstrom.fbx" id="1_0dyjn"]
 [ext_resource type="Script" uid="uid://ce6bopaalpavb" path="res://scripts/knight.gd" id="1_5fsgc"]
@@ -9,6 +9,7 @@
 [ext_resource type="AnimationLibrary" uid="uid://b5ylccurdptoe" path="res://art/characters/knight/Sword And Shield Walk.fbx" id="4_k2txo"]
 [ext_resource type="AnimationLibrary" uid="uid://d2hn1vp3gupe3" path="res://art/characters/knight/Sword And Shield Slash.fbx" id="6_mvyd6"]
 [ext_resource type="AnimationLibrary" uid="uid://b22rllx7kwbup" path="res://art/characters/knight/Sword And Shield Strafe.fbx" id="7_mvyd6"]
+[ext_resource type="PackedScene" uid="uid://bg2o1wm0chwdy" path="res://scenes/hitbox.tscn" id="10_3cm67"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_5fsgc"]
 radius = 0.47
@@ -214,4 +215,10 @@ parameters/WalkStrafeBlend/StrafeScale/scale = 1.0
 parameters/WalkStrafeBlend/WalkScale/scale = 1.0
 parameters/WalkStrafeBlend/move/blend_amount = 0.0
 
+[node name="hitbox" parent="." instance=ExtResource("10_3cm67")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+
 [connection signal="animation_finished" from="AnimationTree" to="." method="_on_animation_tree_animation_finished"]
+[connection signal="hurtbox_collided" from="hitbox" to="." method="_on_hitbox_hit"]
+
+[editable path="hitbox"]

@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://dikfmh2oyvtfc"]
+[gd_scene load_steps=21 format=3 uid="uid://dikfmh2oyvtfc"]
 
 [ext_resource type="PackedScene" uid="uid://bradydmqjatd7" path="res://scenes/knight.tscn" id="1_o5qli"]
 [ext_resource type="Texture2D" uid="uid://df7fpu6240i5n" path="res://art/terrain/Rock030_1K-PNG/Rock030_1K-PNG_Color.png" id="2_sugp2"]
@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://dknsg2oslatf2" path="res://art/terrain/Grass001_1K-PNG/Grass001_1K-PNG_Color.png" id="4_tbgi4"]
 [ext_resource type="Texture2D" uid="uid://c5m3evwply7vv" path="res://art/terrain/Grass001_1K-PNG/Grass001_1K-PNG_NormalDX.png" id="5_tefeu"]
 [ext_resource type="PackedScene" uid="uid://drspu3oq82t8t" path="res://scenes/hud.tscn" id="6_tefeu"]
+[ext_resource type="PackedScene" uid="uid://dcikct5hoaavt" path="res://scenes/hurtbox.tscn" id="7_o6xl0"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_o5qli"]
 sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
@@ -106,6 +107,10 @@ detiling_shift = 0.25
 mesh_list = Array[Terrain3DMeshAsset]([SubResource("Terrain3DMeshAsset_tefeu")])
 texture_list = Array[Terrain3DTextureAsset]([SubResource("Terrain3DTextureAsset_tbgi4"), SubResource("Terrain3DTextureAsset_o6xl0")])
 
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_tipki"]
+height = 4.0
+radius = 22.876465
+
 [node name="Main" type="Node3D" groups=["world"]]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
@@ -126,3 +131,12 @@ top_level = true
 metadata/_edit_lock_ = true
 
 [node name="HUD" parent="." instance=ExtResource("6_tefeu")]
+
+[node name="ominous_hurtbox_swamp" parent="." instance=ExtResource("7_o6xl0")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -32.334, -3, -82.298)
+
+[node name="CollisionShape3D" parent="ominous_hurtbox_swamp" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 4.3709183)
+shape = SubResource("CylinderShape3D_tipki")
+
+[editable path="ominous_hurtbox_swamp"]

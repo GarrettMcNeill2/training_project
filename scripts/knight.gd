@@ -35,11 +35,11 @@ var current_strafe: float = 0.0
 const GRAVITY = 20.0
 
 # status variables
-var health: int = 100:
+var health: float = 100:
 	set(v):
 		health = v
 		emit_signal("health_changed")
-var max_health: int = 100
+var max_health: float = 100
 var stamina: float = 5.0:
 	set(v):
 		stamina = v
@@ -186,3 +186,8 @@ func _on_animation_tree_animation_finished(anim_name: StringName) -> void:
 			state = "idle"
 		slash_cooldown = 0.0
 		attack_cooldown = 0.0
+
+func _on_hitbox_hit(hb: hurtbox, repeat: bool):
+	if repeat: return
+	health = health - hb.hurt_damage
+	print("remaining health: ", health)
